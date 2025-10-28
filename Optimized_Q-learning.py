@@ -11,9 +11,6 @@ import torch.optim as optim
 
 from smac.env import StarCraft2Env
 
-# -------------------------
-# Hyperparams
-# -------------------------
 SEED = 42
 GAMMA = 0.99
 LR = 1e-3
@@ -32,9 +29,6 @@ DEVICE = torch.device("cpu")
 
 Transition = namedtuple("Transition", ("obs", "action", "reward", "next_obs", "done", "avail", "next_avail"))
 
-# -------------------------
-# Q network
-# -------------------------
 class QNetwork(nn.Module):
     def __init__(self, input_dim, output_dim, hidden=128):
         super(QNetwork, self).__init__()
@@ -49,10 +43,6 @@ class QNetwork(nn.Module):
     def forward(self, x):
         return self.net(x)
 
-
-# -------------------------
-# Replay buffer
-# -------------------------
 class ReplayBuffer:
     def __init__(self, capacity):
         self.buffer = deque(maxlen=capacity)
@@ -67,10 +57,6 @@ class ReplayBuffer:
     def __len__(self):
         return len(self.buffer)
     
-
-# -------------------------
-# Utilities
-# -------------------------
 def select_action_epsilon_greedy(net, obs_np, avail_actions, epsilon):
     # obs_np: numpy array shape (obs_dim,)
     obs = torch.from_numpy(obs_np).float().unsqueeze(0).to(DEVICE)  # (1, obs_dim)
@@ -117,9 +103,6 @@ def compute_td_loss(net, target_net, transitions, n_actions, gamma):
     return loss
 
 
-# -------------------------
-# Main training loop
-# -------------------------
 def main():
     random.seed(SEED)
     np.random.seed(SEED)
