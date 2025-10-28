@@ -1,1 +1,1 @@
-print('KSS')
+#KSC
